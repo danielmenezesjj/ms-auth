@@ -1,7 +1,7 @@
-package com.msauth.msauth.services;
+package com.msauth.msauth.services.AuthorizationService;
 
 
-import com.msauth.msauth.repository.UserRepository.UserRepository;
+import com.msauth.msauth.infra.repository.UserRepository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +16,6 @@ public class AuthorizationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username);
+        return userRepository.findByemail(username);
     }
 }

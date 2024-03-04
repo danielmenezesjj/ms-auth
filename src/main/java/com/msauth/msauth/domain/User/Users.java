@@ -105,6 +105,25 @@ public class Users implements UserDetails {
         updatedAt = new Date();
     }
 
+    public void updateUser(UsersDTO usersDTO){
+        if(usersDTO.email() != null){
+            this.email = usersDTO.email();
+        }
+        if(usersDTO.isActive() != null){
+            this.isActive = usersDTO.isActive();
+        }
+        if(usersDTO.name() != null){
+            this.name = usersDTO.name();
+        }
+        if(usersDTO.cidade() != null){
+            this.cidade = usersDTO.cidade();
+        }
+        if(usersDTO.about() != null){
+            this.about = usersDTO.about();
+        }
+    }
+
+
 
 }
 

@@ -5,6 +5,7 @@ import com.msauth.msauth.domain.Perfil.Perfil;
 import com.msauth.msauth.domain.User.Users;
 import com.msauth.msauth.dto.Users.UsersDTO;
 import com.msauth.msauth.services.AuthorizationService.AuthService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,13 @@ public class UsersController {
     public ResponseEntity getUser(@PathVariable String email) throws Exception {
         var list = authService.getOne(email);
         return ResponseEntity.ok(list);
+    }
+
+    @PutMapping("/{email}")
+    @Transactional
+    public ResponseEntity updateUsers(@RequestBody UsersDTO data, @PathVariable String email) throws Exception {
+        authService.update(email, data);
+        return ResponseEntity.ok().build();
     }
 
 

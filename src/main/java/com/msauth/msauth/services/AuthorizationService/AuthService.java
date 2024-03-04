@@ -55,5 +55,16 @@ public class AuthService {
         }
         throw new RuntimeException("Usuario não localizado!");
     }
+    public void update(String email, UsersDTO data) throws Exception{
+        Optional<Users> optionalUsers = userRepository.findByEmailOptional(email);
+        if(optionalUsers.isPresent()){
+            Users users = optionalUsers.get();
+            users.updateUser(data);
+            userRepository.save(users);
+        }else{
+            throw new Exception("Usuario não localizado");
+        }
+    }
+
 
 }

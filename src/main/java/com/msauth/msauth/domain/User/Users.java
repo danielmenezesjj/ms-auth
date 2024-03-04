@@ -2,6 +2,7 @@ package com.msauth.msauth.domain.User;
 
 
 import com.msauth.msauth.domain.Perfil.Perfil;
+import com.msauth.msauth.dto.Users.UsersDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -31,8 +32,18 @@ public class Users implements UserDetails {
     private Integer id;
     @NotNull
     private String email;
+    @NotNull
     private String password;
+    @NotNull
     private Boolean isActive;
+    @NotNull
+    private String name;
+
+    private String cidade;
+
+    private String about;
+
+
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -56,6 +67,7 @@ public class Users implements UserDetails {
                 .map(perfil -> new SimpleGrantedAuthority(perfil.getRole()))
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public String getUsername() {

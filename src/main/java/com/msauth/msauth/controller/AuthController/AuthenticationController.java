@@ -1,8 +1,11 @@
 package com.msauth.msauth.controller.AuthController;
 
 
+import com.msauth.msauth.domain.User.Users;
 import com.msauth.msauth.dto.Auth.AuthDTO;
+import com.msauth.msauth.dto.Users.LoginResponse;
 import com.msauth.msauth.infra.repository.UserRepository.UserRepository;
+import com.msauth.msauth.infra.security.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     @Autowired
+    private TokenService tokenService;
+
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
@@ -30,8 +36,11 @@ public class AuthenticationController {
     public ResponseEntity login(@RequestBody @Valid AuthDTO dto) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(dto.email(), dto.password());
         try {
+
             var auth = this.authenticationManager.authenticate(usernamePassword);
-            return ResponseEntity.ok().build();
+            var token = tokenService.generateToken((Users) auth.getPrincipal());
+
+            return ResponseEntity.ok(new LoginResponse(token));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

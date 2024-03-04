@@ -23,7 +23,7 @@ public class UsersController {
 
 
     @PostMapping()
-    public ResponseEntity<String> cadastrarUsuario(@RequestBody UsersDTO usersDTO) {
+    public ResponseEntity<String> cadastrarUsuario(@RequestBody UsersDTO usersDTO) throws Exception {
         // Supondo que você também receba a lista de roles associados ao usuário no DTO
         Set<String> perfilRoles = usersDTO.perfis().stream().map(Perfil::getRole).collect(Collectors.toSet());
         Users novoUsuario = authService.cadastrarUsuario(usersDTO, perfilRoles);
@@ -33,6 +33,12 @@ public class UsersController {
     @GetMapping
     public ResponseEntity listUsers(){
         var list = authService.getAll();
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity getUser(@PathVariable String email) throws Exception {
+        var list = authService.getOne(email);
         return ResponseEntity.ok(list);
     }
 

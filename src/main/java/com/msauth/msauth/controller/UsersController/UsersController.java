@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,6 +32,7 @@ public class UsersController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Usuário cadastrado com sucesso!");
     }
 
+
     @GetMapping
     public ResponseEntity listUsers(){
         var list = authService.getAll();
@@ -50,9 +52,10 @@ public class UsersController {
         return ResponseEntity.ok().build();
     }
 
-
-
-
-
-
+    @PutMapping("/ftPerfil/{email}")
+    @Transactional
+    public ResponseEntity updateFoto(@RequestParam("file") MultipartFile file, @PathVariable String email) throws Exception {
+        authService.updateFoto(email, file);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -43,6 +43,8 @@ public class Users implements UserDetails {
 
     private String about;
 
+    private String imagem;
+
 
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -121,6 +123,7 @@ public class Users implements UserDetails {
         if(usersDTO.about() != null){
             this.about = usersDTO.about();
         }
+
     }
 
 

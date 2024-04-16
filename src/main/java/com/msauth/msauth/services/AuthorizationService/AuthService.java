@@ -6,10 +6,12 @@ import com.msauth.msauth.domain.User.Users;
 import com.msauth.msauth.dto.Users.UsersDTO;
 import com.msauth.msauth.infra.repository.PerfilRepository.PerfilRepository;
 import com.msauth.msauth.infra.repository.UserRepository.UserRepository;
+import com.msauth.msauth.services.AwsService.AwsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -25,6 +27,9 @@ public class AuthService {
 
     @Autowired
     private PerfilRepository perfilRepository;
+
+    @Autowired
+    private AwsService awsService;
 
     public Users cadastrarUsuario(UsersDTO usersDTO, Set<String> perfilRoles) throws Exception  {
         Users novoUsuario = new Users();
@@ -58,8 +63,21 @@ public class AuthService {
     public void update(String email, UsersDTO data) throws Exception{
         Optional<Users> optionalUsers = userRepository.findByEmailOptional(email);
         if(optionalUsers.isPresent()){
+            System.out.println(data.imagem());
+            System.out.println(data.about());
             Users users = optionalUsers.get();
             users.updateUser(data);
+            userRepository.save(users);
+        }else{
+            throw new Exception("Usuario não localizado");
+        }
+    }
+
+    public void updateFoto(String email, MultipartFile file) throws Exception{
+        Optional<Users> optionalUsers = userRepository.findByEmailOptional(email);
+        if(optionalUsers.isPresent() && file != null){
+            Users users = optionalUsers.get();
+            users.setImagem(awsService.uploadImage(file));
             userRepository.save(users);
         }else{
             throw new Exception("Usuario não localizado");

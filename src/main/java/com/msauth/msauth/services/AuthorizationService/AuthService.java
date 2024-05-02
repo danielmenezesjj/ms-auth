@@ -63,11 +63,19 @@ public class AuthService {
     public void update(String email, UsersDTO data) throws Exception{
         Optional<Users> optionalUsers = userRepository.findByEmailOptional(email);
         if(optionalUsers.isPresent()){
-            System.out.println(data.imagem());
-            System.out.println(data.about());
             Users users = optionalUsers.get();
             users.updateUser(data);
             userRepository.save(users);
+        }else{
+            throw new Exception("Usuario não localizado");
+        }
+    }
+
+    public void delete (Integer id) throws Exception{
+        Optional<Users> optionalUsers = userRepository.findById(id);
+        if(optionalUsers.isPresent()){
+            Users users = optionalUsers.get();
+            userRepository.delete(users);
         }else{
             throw new Exception("Usuario não localizado");
         }

@@ -45,6 +45,13 @@ public class UsersController {
         return ResponseEntity.ok(list);
     }
 
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteUser(@PathVariable Integer id) throws Exception {
+        authService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/{email}")
     @Transactional
     public ResponseEntity updateUsers(@RequestBody UsersDTO data, @PathVariable String email) throws Exception {
